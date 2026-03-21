@@ -10,6 +10,7 @@ import com.portotemp.api.repository.HospedeRepository;
 import com.portotemp.api.repository.ImovelRepository;
 import com.portotemp.api.repository.ReservaRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,6 +25,8 @@ public class ReservaService {
     private final ImovelRepository imovelRepository;
     private final HospedeRepository hospedeRepository;
     private final TenantService tenantService;
+    @Lazy
+    private final LimpezaService limpezaService;
 
     public List<ReservaResponse> listar() {
         UUID tenantId = tenantService.getCurrentTenantId();
@@ -77,12 +80,16 @@ public class ReservaService {
                 .dataCheckout(request.dataCheckout())
                 .origem(request.origem())
                 .valorTotal(request.valorTotal())
-                .taxaLimpezaHospede(request.taxaLimpezaHospede() != null ? request.taxaLimpezaHospede() : imovel.getTaxaLimpezaHospede())
+                .taxaLimpezaHospede(request.taxaLimpezaHospede() != null ?
+                        request.taxaLimpezaHospede() : imovel.getTaxaLimpezaHospede())
                 .numPessoas(request.numPessoas())
                 .observacoes(request.observacoes())
                 .build();
 
-        return ReservaResponse.from(reservaRepository.save(reserva));
+        reserva = reservaRepository.save(reserva);
+        limpezaService.criarAutomatica(reserva);
+
+        return ReservaResponse.from(reserva);
     }
 
     @Transactional

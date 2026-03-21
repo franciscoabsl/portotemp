@@ -21,6 +21,7 @@ public class ImovelService {
     private final ProprietarioRepository proprietarioRepository;
     private final TenantService tenantService;
 
+    @Transactional(readOnly = true)
     public List<ImovelResponse> listar() {
         UUID tenantId = tenantService.getCurrentTenantId();
         return imovelRepository.findAllByTenantIdAndAtivoTrue(tenantId)
@@ -29,6 +30,7 @@ public class ImovelService {
                 .toList();
     }
 
+    @Transactional(readOnly = true)
     public List<ImovelResponse> listarPorProprietario(UUID proprietarioId) {
         UUID tenantId = tenantService.getCurrentTenantId();
         return imovelRepository.findAllByTenantIdAndProprietarioIdAndAtivoTrue(tenantId, proprietarioId)
@@ -37,6 +39,7 @@ public class ImovelService {
                 .toList();
     }
 
+    @Transactional(readOnly = true)
     public ImovelResponse buscarPorId(UUID id) {
         UUID tenantId = tenantService.getCurrentTenantId();
         return imovelRepository.findByIdAndTenantId(id, tenantId)

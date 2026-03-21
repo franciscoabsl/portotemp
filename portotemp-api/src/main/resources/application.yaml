@@ -12,7 +12,7 @@ spring:
     hibernate:
       ddl-auto: validate
     show-sql: false
-    open-in-view: false
+    open-in-view: true
     properties:
       hibernate:
         format_sql: true
@@ -27,8 +27,8 @@ server:
 
 jwt:
   secret: dev_secret_local_apenas_deve_ter_no_minimo_32_chars
-  expiration: 86400000
+  expiration: 2592000000
 
 logging:
   level:
-    org.springframework.security: DEBUG
+    org.springframework.security: WARN
