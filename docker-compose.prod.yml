@@ -1,0 +1,42 @@
+services:
+  portotemp_api:
+    build:
+      context: ./portotemp-api
+      dockerfile: Dockerfile
+    container_name: portotemp_api
+    restart: unless-stopped
+    env_file: .env.prod
+    expose:
+      - '8080'
+    depends_on:
+      - portotemp_postgres
+    networks:
+      - proxy_network
+
+  portotemp_web:
+    build:
+      context: ./portotemp-web
+      dockerfile: Dockerfile
+    container_name: portotemp_web
+    restart: unless-stopped
+    expose:
+      - '80'
+    networks:
+      - proxy_network
+
+  portotemp_postgres:
+    image: postgres:16-alpine
+    container_name: portotemp_postgres
+    restart: unless-stopped
+    env_file: .env.prod
+    volumes:
+      - portotemp_postgres_data:/var/lib/postgresql/data
+    networks:
+      - proxy_network
+
+volumes:
+  portotemp_postgres_data:
+
+networks:
+  proxy_network:
+    external: true

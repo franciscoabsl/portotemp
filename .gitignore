@@ -1,0 +1,17 @@
+# Env
+.env.prod
+.env.local
+.env
+
+# Java
+portotemp-api/target/
+*.class
+
+# Node
+portotemp-web/node_modules/
+portotemp-web/dist/
+
+# IDE
+.idea/
+.vscode/
+*.iml
