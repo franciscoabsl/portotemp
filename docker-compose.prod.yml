@@ -11,7 +11,7 @@ services:
     depends_on:
       - portotemp_postgres
     networks:
-      - proxy_network
+      - infra_proxy-network
 
   portotemp_web:
     build:
@@ -22,7 +22,7 @@ services:
     expose:
       - '80'
     networks:
-      - proxy_network
+      - infra_proxy-network
 
   portotemp_postgres:
     image: postgres:16-alpine
@@ -32,11 +32,11 @@ services:
     volumes:
       - portotemp_postgres_data:/var/lib/postgresql/data
     networks:
-      - proxy_network
+      - infra_proxy-network
 
 volumes:
   portotemp_postgres_data:
 
 networks:
-  proxy_network:
+  infra_proxy-network:
     external: true
