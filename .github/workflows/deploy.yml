@@ -22,4 +22,4 @@ jobs:
             git pull origin main
             docker compose -f docker-compose.prod.yml build
             docker compose -f docker-compose.prod.yml up -d
-            docker compose -f /home/franciscolima/apps/infra/docker-compose.yml restart proxy_nginx
+            docker compose -f /home/franciscolima/apps/infra/docker-compose.yml restart nginx
