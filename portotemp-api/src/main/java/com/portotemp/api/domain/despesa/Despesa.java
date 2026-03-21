@@ -1,7 +1,7 @@
-package com.portotemp.api.domain.limpeza;
+package com.portotemp.api.domain.despesa;
 
-import com.portotemp.api.domain.prestador.Prestador;
-import com.portotemp.api.domain.reserva.Reserva;
+import com.portotemp.api.domain.imovel.Imovel;
+import com.portotemp.api.domain.tenant.Tenant;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -11,35 +11,40 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Entity
-@Table(name = "limpeza")
+@Table(name = "despesa")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Limpeza {
+public class Despesa {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "reserva_id", nullable = false)
-    private Reserva reserva;
+    @JoinColumn(name = "tenant_id", nullable = false)
+    private Tenant tenant;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "prestador_id")
-    private Prestador prestador;
+    @JoinColumn(name = "imovel_id", nullable = false)
+    private Imovel imovel;
 
     @Column(nullable = false)
-    private LocalDate data;
+    private String tipo;
+
+    private String descricao;
 
     @Column(nullable = false)
-    private BigDecimal valorPago;
+    private BigDecimal valor;
+
+    @Column(nullable = false)
+    private LocalDate competencia;
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
-    private StatusLimpeza status;
+    private StatusPagamento statusPagamento;
 
     @Column(nullable = false)
     private LocalDateTime criadoEm;
@@ -47,7 +52,6 @@ public class Limpeza {
     @PrePersist
     public void prePersist() {
         this.criadoEm = LocalDateTime.now();
-        if (this.status == null) this.status = StatusLimpeza.PENDENTE;
-        if (this.valorPago == null) this.valorPago = BigDecimal.ZERO;
+        if (this.statusPagamento == null) this.statusPagamento = StatusPagamento.PAGO;
     }
 }
