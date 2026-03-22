@@ -1,0 +1,21 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/portotemp
+    username: portotemp_user
+    password: portotemp_senha_segura_2026
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    open-in-view: true
+
+jwt:
+  secret: dev_secret_local_apenas_deve_ter_no_minimo_32_chars
+  expiration: 2592000000
+
+cors:
+  allowed-origins: http://localhost:5173,http://localhost:4173
+
+logging:
+  level:
+    org.springframework.security: DEBUG
+    com.portotemp: DEBUG
