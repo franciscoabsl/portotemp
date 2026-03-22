@@ -1,7 +1,6 @@
 package com.portotemp.api.repository;
 
 import com.portotemp.api.domain.reserva.Reserva;
-import com.portotemp.api.domain.reserva.StatusReserva;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -30,8 +29,8 @@ public interface ReservaRepository extends JpaRepository<Reserva, UUID> {
                                 @Param("checkout") LocalDate checkout);
 
     @Query("SELECT r FROM Reserva r WHERE r.tenant.id = :tenantId " +
-           "AND FUNCTION('MONTH', r.dataCheckout) = :mes " +
-           "AND FUNCTION('YEAR', r.dataCheckout) = :ano " +
+           "AND EXTRACT(MONTH FROM r.dataCheckout) = :mes " +
+           "AND EXTRACT(YEAR FROM r.dataCheckout) = :ano " +
            "AND r.imovel.proprietario.id = :proprietarioId " +
            "AND r.status != 'CANCELADA'")
     List<Reserva> findByFechamento(@Param("tenantId") UUID tenantId,
