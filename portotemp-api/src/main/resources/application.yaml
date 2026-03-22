@@ -1,4 +1,6 @@
 spring:
+  profiles:
+    active: dev
   application:
     name: portotemp-api
 
@@ -35,3 +37,11 @@ logging:
 
 cors:
   allowed-origins: ${CORS_ALLOWED_ORIGINS:http://localhost:5173,http://localhost:4173}
+
+---
+spring:
+  profiles:
+    active: dev
+  config:
+    activate:
+      on-profile: dev
