@@ -1,33 +1,44 @@
 import { useLocation } from 'react-router-dom'
-import { Bell } from 'lucide-react'
 import { useAuth } from '../hooks/useAuth'
 
 const pageTitles = {
-  '/dashboard':     'Dashboard',
-  '/proprietarios': 'Proprietários',
-  '/imoveis':       'Imóveis',
-  '/reservas':      'Reservas',
-  '/limpezas':      'Limpezas',
-  '/despesas':      'Despesas',
-  '/fechamentos':   'Fechamentos',
-  '/usuarios':      'Usuários',
+  '/dashboard':     { title: 'Dashboard', subtitle: 'Visão geral da operação' },
+  '/proprietarios': { title: 'Proprietários', subtitle: 'Gerencie os donos dos imóveis' },
+  '/imoveis':       { title: 'Imóveis', subtitle: 'Gerencie seu portfólio' },
+  '/reservas':      { title: 'Reservas', subtitle: 'Controle de hospedagens' },
+  '/limpezas':      { title: 'Limpezas', subtitle: 'Agenda de faxinas e lavanderia' },
+  '/despesas':      { title: 'Despesas', subtitle: 'Gastos e reembolsos' },
+  '/fechamentos':   { title: 'Fechamentos', subtitle: 'Relatórios mensais por proprietário' },
+  '/usuarios':      { title: 'Usuários', subtitle: 'Gerencie acessos ao sistema' },
+}
+
+const roleBadge = {
+  ADMIN:        { label: 'Admin',        className: 'bg-primary-50 text-primary-700' },
+  ASSISTENTE:   { label: 'Assistente',   className: 'bg-amber-50 text-amber-700' },
+  PROPRIETARIO: { label: 'Proprietário', className: 'bg-slate-100 text-slate-600' },
 }
 
 const Topbar = () => {
   const { pathname } = useLocation()
   const { user } = useAuth()
-  const title = pageTitles[pathname] ?? 'Portotemp'
+  const page = pageTitles[pathname] ?? { title: 'Portotemp', subtitle: '' }
+  const badge = roleBadge[user?.role] ?? roleBadge.ADMIN
 
   return (
-    <header className="h-14 bg-white border-b border-neutral-200 px-6 flex items-center justify-between sticky top-0 z-10">
-      <h2 className="text-base font-semibold text-neutral-800">{title}</h2>
+    <header className="h-16 bg-white border-b border-slate-100 px-6 flex items-center justify-between sticky top-0 z-10">
+      <div>
+        <h2 className="text-base font-bold text-slate-900 leading-none">{page.title}</h2>
+        {page.subtitle && <p className="text-xs text-slate-400 mt-1">{page.subtitle}</p>}
+      </div>
       <div className="flex items-center gap-3">
-        <span className="text-xs text-neutral-400 bg-neutral-100 px-2.5 py-1 rounded-full font-medium">
-          {user?.role}
+        <span className={`text-xs font-semibold px-2.5 py-1 rounded-full ${badge.className}`}>
+          {badge.label}
         </span>
-        <button className="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-neutral-100 text-neutral-500 transition-colors">
-          <Bell size={16} />
-        </button>
+        <div className="w-8 h-8 rounded-full bg-primary-600 flex items-center justify-center">
+          <span className="text-white text-xs font-bold">
+            {user?.nome?.charAt(0).toUpperCase()}
+          </span>
+        </div>
       </div>
     </header>
   )
