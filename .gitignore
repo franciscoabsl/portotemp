@@ -15,3 +15,4 @@ portotemp-web/dist/
 .idea/
 .vscode/
 *.iml
+.env.local
